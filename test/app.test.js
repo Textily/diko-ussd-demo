@@ -23,29 +23,84 @@ describe("app", function() {
         });
 
         describe("when the user starts a session", function() {
-            it("should present the main menu", function() {
+            it("should present diko main menu", function() {
                 return tester
                     .start()
                     .check.interaction({
                         state: 'states:main',
                         reply: [
                             'DIKO AGRI-GROUP',
-                            '1. Get Cow',
-                            '2. Get Sheep/Goat',
+                            '1. Buy Cow',
+                            '2. Buy Sheep/Goat',
                             '3. Special',
-                            '4. About Diko',
-                            '5. Exit'
+                            '4. Delivery',
+                            '5. Current Competition',
+                            '6. Rate Us',
+                            '7. About Diko',
+                            '8. Exit'
                         ].join('\n')
                     })
                     .run();
             });
         });
 
+        describe("when the user asks to delivery menu", function() {
+            it("should present the delivery menu", function() {
+                return tester
+                    .setup.user.state('states:main')
+                    .input('4')
+                    .check.interaction({
+                        state: 'states:delivery',
+                        reply: [
+                            'DIKO AGRI-GROUP\n\nWe offer free delivery\nanywhere around MAP\n',
+                            '1. Back to Main',
+                            '2. Exit'
+                            ].join('\n')
+                    })
+                    .run();
+            });
+        });
+
+        describe("when the user asks to see competitions menu", function() {
+            it("should present the competition menu", function() {
+                return tester
+                    .setup.user.state('states:main')
+                    .input('5')
+                    .check.interaction({
+                        state: 'states:competitions',
+                        reply: [
+                            'DIKO AGRI-GROUP\n2015 Festive Competition\nRefer anyone to us and\nwin your self a sheep worth R1000.00 :)\nAsk at our kraals for more info',
+                            '1. Back to Main',
+                            '2. Exit'
+                            ].join('\n')
+                    })
+                    .run();
+            });
+        });
+
+        describe("when the user asks to see the aboutus menu", function() {
+            it("should present the aboutus menu", function() {
+                return tester
+                    .setup.user.state('states:main')
+                    .input('7')
+                    .check.interaction({
+                        state: 'states:aboutus',
+                        reply: [
+                            'About DIKO AGRI-GROUP\nMission Statement\nVision & Values',
+                            '1. Back to Main',
+                            '2. Exit'
+                            ].join('\n')
+                    })
+                    .run();
+            });
+        });
+
+
         describe("when the user asks to exit", function() {
             it("should say thank you and end the session", function() {
                 return tester
                     .setup.user.state('states:main')
-                    .input('5')
+                    .input('8')
                     .check.interaction({
                         state: 'states:exit',
                         reply: 'Thank you! Demo ended.\nCreated by Textily (Pty.) Ltd'
